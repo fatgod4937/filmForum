@@ -1,0 +1,8 @@
+CREATE TABLE `filmForumDB`.`films` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(50) NOT NULL,
+  `genre` VARCHAR(50) NULL,
+  `release_date` DATE NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
