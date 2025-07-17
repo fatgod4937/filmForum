@@ -1,0 +1,107 @@
+{
+    "1": {
+        "title": "superman",
+        "createdAt": 1721215500000,
+        "author": "szabi",
+        "description": "loremipsum dolores patro quatro einz zwei drei wo ai wo de nupengyou",
+        "comments": {
+            "1": {
+                "author": "akos",
+                "message": "hulyeseg",
+                "postedAt": 1721215500000
+            },
+            "2": {
+                "author": "laci",
+                "message": "hulyeseg",
+                "postedAt": 1721215500000
+            },
+            "3": {
+                "author": "lajos",
+                "message": "hulyeseg",
+                "postedAt": 1721215500000
+            },
+            "4": {
+                "author": "tibi",
+                "message": "oszinten nem tom mit irjak meg",
+                "postedAt": 1721215500000
+            }
+        },
+        "movie": { "title": "Superman", "year": 2025 }
+    },
+    "2": {
+        "title": "batman",
+        "createdAt": 1721215500000,
+        "author": "nora",
+        "description": "Batman returns with vengeance and better gadgets. Discuss the tech!",
+        "comments": {
+            "1": {
+                "author": "dani",
+                "message": "Impressive cinematography!",
+                "postedAt": 1721215500000
+            },
+            "2": {
+                "author": "mate",
+                "message": "Needs more character depth.",
+                "postedAt": 1721215500000
+            }
+        },
+        "movie": { "title": "Batman", "year": 2024 }
+    },
+    "3": {
+        "title": "wonder woman",
+        "createdAt": 1721215500000,
+        "author": "andrea",
+        "description": "Wonder Woman travels through time — does it work?",
+        "comments": {
+            "1": {
+                "author": "zoli",
+                "message": "Plot twist was crazy!",
+                "postedAt": 1721215500000
+            }
+        },
+        "movie": { "title": "Wonder Woman", "year": 2023 }
+    },
+    "4": {
+        "title": "green lantern",
+        "createdAt": 1721215500000,
+        "author": "bela",
+        "description": "Visual effects were top notch, but the story fell short in my opinion.",
+        "comments": {
+            "1": {
+                "author": "juli",
+                "message": "Agree 100%",
+                "postedAt": 1721215500000
+            },
+            "2": {
+                "author": "bence",
+                "message": "I loved the visuals.",
+                "postedAt": 1721215500000
+            }
+        },
+        "movie": { "title": "Green Lantern", "year": 2026 }
+    },
+    "5": {
+        "title": "flash",
+        "createdAt": 1721215500000,
+        "author": "klaudia",
+        "description": "Flashpoint arc adaptation! Multiverse madness done right or not?",
+        "comments": {
+            "1": {
+                "author": "robi",
+                "message": "Ez most komoly volt",
+                "postedAt": 1721215500000
+            },
+            "2": {
+                "author": "vivi",
+                "message": "I’m confused but I liked it",
+                "postedAt": 1721215500000
+            },
+            "3": {
+                "author": "tomi",
+                "message": "Reverse Flash is the MVP",
+                "postedAt": 1721215500000
+            }
+        },
+        "movie": { "title": "Flash", "year": 2025 }
+    }
+}
