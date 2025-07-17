@@ -7,6 +7,7 @@ import com.tcs.miniproject.FilmForum.DAO.interfaces.ICommentDAO;
 import com.tcs.miniproject.FilmForum.DAO.interfaces.IFilmDAO;
 import com.tcs.miniproject.FilmForum.DAO.interfaces.IForumDAO;
 import com.tcs.miniproject.FilmForum.DAO.interfaces.IUserDAO;
+import com.tcs.miniproject.FilmForum.DTO.*;
 import com.tcs.miniproject.FilmForum.entities.Comment;
 import com.tcs.miniproject.FilmForum.entities.Film;
 import com.tcs.miniproject.FilmForum.entities.Forum;
@@ -58,49 +59,54 @@ public class FilmForumService implements IFilmForumService {
     }
 
     @Override
-    public List<Film> listAllFilms() {
-        return filmDAO.listAll();
+    public List<FilmDTO> listAllFilms() {
+        return List.of();
     }
 
     @Override
-    public List<Comment> listAllCommentsByForumId(int id) {
-        return commentDAO.findAllByForumId(id);
-
-
+    public List<CommentItemDTO> listAllCommentsByForumId(int id) {
+        return List.of();
     }
 
     @Override
-    public List<Forum> listAllForumsByFilmId(int id) {
-        return forumDAO.findAllByFilmId(id);
+    public List<ForumItemDTO> listAllForumsByFilmId(int id) {
+        return List.of();
     }
 
     @Override
-    public Comment createComment(Comment comment, int userId) {
-
-    }
-
-    @Override
-    public Forum createForum(Forum forum, int userId) {
+    public ForumDetailDTO getForumById(int id) {
         return null;
     }
 
     @Override
-    public Comment updateComment(Comment comment, int userId) {
-        return null;
+    public String createComment(CommentCreateDTO comment) {
+        return "";
     }
 
     @Override
-    public Forum updateForum(Forum forum, int userId) {
-        return null;
+    public String createForum(ForumCreateDTO forum) {
+        return "";
     }
 
     @Override
-    public Comment deleteComment(Comment comment, int userId) {
-        return null;
+    public String updateComment(CommentCreateDTO comment) {
+        return "";
     }
 
     @Override
-    public Forum deleteForum(Forum forum, int userId) {
-        return null;
+    public String updateForum(ForumCreateDTO forum) {
+        return "";
     }
+
+    @Override
+    public String deleteComment(int commentId, int userId) {
+        return "";
+    }
+
+    @Override
+    public String deleteForum(int forumId, int userId) {
+        return "";
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.tcs.miniproject.FilmForum.service;
 
+import com.tcs.miniproject.FilmForum.DTO.*;
 import com.tcs.miniproject.FilmForum.entities.Comment;
 import com.tcs.miniproject.FilmForum.entities.Film;
 import com.tcs.miniproject.FilmForum.entities.Forum;
@@ -12,17 +13,18 @@ public interface IFilmForumService {
     public int login(String username, String password);
 
     //Listings
-    public List<Film> listAllFilms();
-    public List<Comment> listAllCommentsByForumId(int id);
-    public List<Forum> listAllForumsByFilmId(int id);
+    public List<FilmDTO> listAllFilms();
+    public List<CommentItemDTO> listAllCommentsByForumId(int id);
+    public List<ForumItemDTO> listAllForumsByFilmId(int id);
+    public ForumDetailDTO getForumById(int id);
 
     // posts
-    public Comment createComment(Comment comment, int userId);
-    public Forum createForum(Forum forum, int userId);
+    public String createComment(CommentCreateDTO comment);
+    public String createForum(ForumCreateDTO forum);
 
-    public Comment updateComment(Comment comment, int userId);
-    public Forum updateForum(Forum forum, int userId);
+    public String updateComment(CommentCreateDTO comment);
+    public String updateForum(ForumCreateDTO forum);
 
-    public Comment deleteComment(Comment comment, int userId);
-    public Forum deleteForum(Forum forum, int userId);
+    public String deleteComment(int commentId, int userId);
+    public String deleteForum(int forumId, int userId);
 }
