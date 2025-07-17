@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     AppBar,
     Toolbar,
@@ -22,41 +22,35 @@ import { useRouter } from "next/navigation";
 import Auth from "../Auth/Auth";
 import { Snack } from "@/app/data/Snack";
 import { handleNavigate } from "@/app/util/functions";
+import { useAuth } from "../../context/AuthContext";
 
 const navItems = ["Home", "Forums", "Movies"];
 
 const Navbar: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [authMode, setAuthMode] = useState<"login" | "register" | null>(null);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
     const [showSnack, setShowSnack] = useState<Snack>();
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const router = useRouter();
 
+    const { isLoggedIn, login, logout } = useAuth();
+
     const drawerClick = (page: string) => {
         handleNavigate(router, page);
         setDrawerOpen(false);
     };
 
-    useEffect(() => {
-        const dummyCookie = localStorage.getItem("cookie");
-        if (dummyCookie) setIsLoggedIn(true);
-    }, [isLoggedIn]);
-
     function showSnackBar(message: string, isError: boolean) {
         setShowSnack({ open: true, message, isError });
     }
+
     function handleLogout(): void {
-        localStorage.removeItem("cookie");
-        setShowSnack({
-            open: true,
-            message: "Successful logout",
-            isError: false,
-        });
-        setIsLoggedIn(false);
+        logout();
+        showSnackBar("Successful logout", false);
     }
+
     const snackStyle = {
         backgroundColor: showSnack?.isError ? "red" : "green",
         color: "white",
@@ -85,7 +79,7 @@ const Navbar: React.FC = () => {
                             component="div"
                             sx={{ ml: isMobile ? 1 : 0 }}
                         >
-                            FIlmForum
+                            FilmForum
                         </Typography>
                     </Box>
 
@@ -105,6 +99,7 @@ const Navbar: React.FC = () => {
                             ))}
                         </Box>
                     )}
+
                     <Box>
                         {!isLoggedIn ? (
                             <>
@@ -129,10 +124,7 @@ const Navbar: React.FC = () => {
                                 >
                                     Profile
                                 </Button>
-                                <Button
-                                    color="inherit"
-                                    onClick={() => handleLogout()}
-                                >
+                                <Button color="inherit" onClick={handleLogout}>
                                     Logout
                                 </Button>
                             </>
@@ -165,12 +157,13 @@ const Navbar: React.FC = () => {
                 open={!!authMode}
                 mode={authMode}
                 onClose={() => setAuthMode(null)}
-                setLoggedIn={(x: boolean) => setIsLoggedIn(x)}
+                setLoggedIn={() => login()}
                 onAuthSuccess={() =>
-                    showSnackBar("Successfull validation", false)
+                    showSnackBar("Successful validation", false)
                 }
                 onAuthError={() => showSnackBar("Authentication failed", true)}
             />
+
             <Snackbar
                 open={showSnack?.open}
                 sx={{ marginTop: 4 }}
