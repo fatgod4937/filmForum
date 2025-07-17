@@ -8,6 +8,7 @@ import com.tcs.miniproject.FilmForum.DAO.interfaces.IFilmDAO;
 import com.tcs.miniproject.FilmForum.DAO.interfaces.IForumDAO;
 import com.tcs.miniproject.FilmForum.DAO.interfaces.IUserDAO;
 import com.tcs.miniproject.FilmForum.DTO.*;
+import com.tcs.miniproject.FilmForum.DTOConverter.DTOConverter;
 import com.tcs.miniproject.FilmForum.entities.Comment;
 import com.tcs.miniproject.FilmForum.entities.Film;
 import com.tcs.miniproject.FilmForum.entities.Forum;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,22 +62,38 @@ public class FilmForumService implements IFilmForumService {
 
     @Override
     public List<FilmDTO> listAllFilms() {
-        return List.of();
+        List<Film> films = filmDAO.listAll();
+        List<FilmDTO> result = new ArrayList<>();
+        for(Film film : films){
+            result.add(DTOConverter.convertToDTO(film));
+        }
+        return result;
     }
 
     @Override
     public List<CommentItemDTO> listAllCommentsByForumId(int id) {
-        return List.of();
+        List<Comment> comments = commentDAO.findAllByForumId(id);
+        List<CommentItemDTO> result = new ArrayList<>();
+        for(Comment comment : comments){
+            result.add(DTOConverter.convertToDTO(comment));
+        }
+        return result;
     }
 
     @Override
     public List<ForumItemDTO> listAllForumsByFilmId(int id) {
-        return List.of();
+        List<Forum> forums = forumDAO.findAllByFilmId(id);
+        List<ForumItemDTO> result = new ArrayList<>();
+        for(Forum forum : forums){
+            result.add(DTOConverter.convertToForumItemDTO(forum));
+        }
+        return result;
     }
+
 
     @Override
     public ForumDetailDTO getForumById(int id) {
-        return null;
+        return DTOConverter.convertToDTO(forumDAO.findById(id));
     }
 
     @Override
