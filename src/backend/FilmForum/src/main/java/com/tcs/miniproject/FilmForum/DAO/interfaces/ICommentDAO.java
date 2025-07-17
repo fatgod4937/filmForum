@@ -9,4 +9,5 @@ public interface ICommentDAO {
     public Comment findById(int id);
     public Comment save(Comment comment);
     public void deleteById(int id);
+    public List<Comment> findAllByForumId(int id);
 }

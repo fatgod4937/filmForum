@@ -10,4 +10,5 @@ public interface IForumDAO {
     public Forum findByTitle(String title);
     public Forum save(Forum forum);
     public void deleteById(int id);
+    public List<Forum> findAllByFilmId(int id);
 }

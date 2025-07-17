@@ -7,6 +7,8 @@ import com.tcs.miniproject.FilmForum.entities.Forum;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,5 +45,12 @@ public class CommentDAO implements ICommentDAO {
         Comment comment = entityManager.find(Comment.class, id);
         entityManager.remove(comment);
 
+    }
+
+    @Override
+    public List<Comment> findAllByForumId(int id){
+        TypedQuery<Comment> theQuery = entityManager.createQuery("SELECT c FROM Comment c WHERE c.forum.id = :forumId", Comment.class)
+                .setParameter("forumId", id);
+        return theQuery.getResultList();
     }
 }

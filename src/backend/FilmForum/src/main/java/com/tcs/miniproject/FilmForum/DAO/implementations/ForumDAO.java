@@ -1,6 +1,7 @@
 package com.tcs.miniproject.FilmForum.DAO.implementations;
 
 import com.tcs.miniproject.FilmForum.DAO.interfaces.IForumDAO;
+import com.tcs.miniproject.FilmForum.entities.Comment;
 import com.tcs.miniproject.FilmForum.entities.Forum;
 import com.tcs.miniproject.FilmForum.entities.User;
 import jakarta.persistence.EntityManager;
@@ -48,5 +49,12 @@ public class ForumDAO implements IForumDAO {
         Forum forum = entityManager.find(Forum.class, id);
         entityManager.remove(forum);
 
+    }
+
+    @Override
+    public List<Forum> findAllByFilmId(int id) {
+        TypedQuery<Forum> theQuery = entityManager.createQuery("SELECT f FROM Forum f WHERE f.film.id = :filmId", Forum.class)
+                .setParameter("filmId", id);
+        return theQuery.getResultList();
     }
 }
