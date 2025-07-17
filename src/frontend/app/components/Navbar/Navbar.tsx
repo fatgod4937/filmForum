@@ -21,6 +21,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import Auth from "../Auth/Auth";
 import { Snack } from "@/app/data/Snack";
+import { handleNavigate } from "@/app/util/functions";
 
 const navItems = ["Home", "Forums", "Movies"];
 
@@ -32,10 +33,10 @@ const Navbar: React.FC = () => {
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
     const router = useRouter();
-    const handleNavigate = (page: string) => {
-        router.push(`/${page.toLowerCase()}`);
+
+    const drawerClick = (page: string) => {
+        handleNavigate(router, page);
         setDrawerOpen(false);
     };
 
@@ -95,8 +96,8 @@ const Navbar: React.FC = () => {
                                     key={item}
                                     color="inherit"
                                     onClick={() => {
-                                        if (item === "Home") handleNavigate("");
-                                        else handleNavigate(item);
+                                        if (item === "Home") drawerClick("");
+                                        else drawerClick(item);
                                     }}
                                 >
                                     {item}
@@ -124,7 +125,7 @@ const Navbar: React.FC = () => {
                             <>
                                 <Button
                                     color="inherit"
-                                    onClick={() => handleNavigate("profile")}
+                                    onClick={() => drawerClick("profile")}
                                 >
                                     Profile
                                 </Button>
@@ -150,7 +151,7 @@ const Navbar: React.FC = () => {
                         {navItems.map((text) => (
                             <ListItem key={text} disablePadding>
                                 <ListItemButton
-                                    onClick={() => handleNavigate(text)}
+                                    onClick={() => drawerClick(text)}
                                 >
                                     <ListItemText primary={text} />
                                 </ListItemButton>
