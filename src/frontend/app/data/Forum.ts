@@ -1,4 +1,4 @@
-export interface ForumType {
+export type ForumType = {
     title: string;
     createdAt: number;
     author: string;
@@ -14,4 +14,4 @@ export interface ForumType {
         title: string;
         year: number;
     };
-}
+};

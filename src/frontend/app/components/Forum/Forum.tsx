@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Typography,
@@ -6,8 +6,11 @@ import {
     CardContent,
     CardHeader,
     Button,
+    TextField,
 } from "@mui/material";
 import Comment from "../Comment/Comment";
+import { ForumType } from "@/app/data/Forum";
+import { useAuth } from "@/app/context/AuthContext";
 
 interface CommentData {
     author: string;
@@ -15,19 +18,7 @@ interface CommentData {
     postedAt: number;
 }
 
-interface ForumProps {
-    title: string;
-    author: string;
-    createdAt: number;
-    description: string;
-    comments: Record<string, CommentData>;
-    movie?: {
-        title: string;
-        year: number;
-    };
-}
-
-const Forum: React.FC<ForumProps> = ({
+const Forum: React.FC<ForumType> = ({
     title,
     author,
     createdAt,
@@ -35,10 +26,12 @@ const Forum: React.FC<ForumProps> = ({
     comments,
     movie,
 }) => {
+    const [newComment, setNewComment] = useState<string>("");
+
     function handleRedirect() {
         throw new Error("Function not implemented.");
     }
-
+    const { isLoggedIn } = useAuth();
     return (
         <Card sx={{ my: 3, borderRadius: 3, backgroundColor: "##F5F5F5" }}>
             <CardHeader
@@ -73,6 +66,20 @@ const Forum: React.FC<ForumProps> = ({
                 {Object.entries(comments).map(([id, comment]) => (
                     <Comment key={id} {...comment} />
                 ))}
+                {isLoggedIn ? (
+                    <TextField
+                        fullWidth
+                        multiline
+                        variant="outlined"
+                        placeholder="Comment something!"
+                        value={newComment}
+                        onChange={(e) => {
+                            setNewComment(e.target.value);
+                        }}
+                    ></TextField>
+                ) : (
+                    ""
+                )}
             </CardContent>
         </Card>
     );
