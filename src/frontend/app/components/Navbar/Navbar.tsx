@@ -15,33 +15,55 @@ import {
     Box,
     useTheme,
     useMediaQuery,
+    Snackbar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import Auth from "../Auth/Auth";
+import { Snack } from "@/app/data/Snack";
 
 const navItems = ["Home", "Forums", "Movies"];
 
 const Navbar: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [authMode, setAuthMode] = useState<"login" | "register" | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
+    const [showSnack, setShowSnack] = useState<Snack>();
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
+
     const router = useRouter();
+    const handleNavigate = (page: string) => {
+        router.push(`/${page.toLowerCase()}`);
+        setDrawerOpen(false);
+    };
+
     useEffect(() => {
         const dummyCookie = localStorage.getItem("cookie");
         if (dummyCookie) setIsLoggedIn(true);
     }, [isLoggedIn]);
 
-    const handleNavigate = (page: string) => {
-        router.push(`/${page.toLowerCase()}`);
-        setDrawerOpen(false);
-    };
+    function showSnackBar(message: string, isError: boolean) {
+        setShowSnack({ open: true, message, isError });
+    }
     function handleLogout(): void {
         localStorage.removeItem("cookie");
+        setShowSnack({
+            open: true,
+            message: "Successful logout",
+            isError: false,
+        });
         setIsLoggedIn(false);
     }
+    const snackStyle = {
+        backgroundColor: showSnack?.isError ? "red" : "green",
+        color: "white",
+        px: 3,
+        py: 1.5,
+        borderRadius: 1,
+        boxShadow: 3,
+    };
 
     return (
         <>
@@ -72,7 +94,10 @@ const Navbar: React.FC = () => {
                                 <Button
                                     key={item}
                                     color="inherit"
-                                    onClick={() => handleNavigate(item)}
+                                    onClick={() => {
+                                        if (item === "Home") handleNavigate("");
+                                        else handleNavigate(item);
+                                    }}
                                 >
                                     {item}
                                 </Button>
@@ -140,7 +165,24 @@ const Navbar: React.FC = () => {
                 mode={authMode}
                 onClose={() => setAuthMode(null)}
                 setLoggedIn={(x: boolean) => setIsLoggedIn(x)}
+                onAuthSuccess={() =>
+                    showSnackBar("Successfull validation", false)
+                }
+                onAuthError={() => showSnackBar("Authentication failed", true)}
             />
+            <Snackbar
+                open={showSnack?.open}
+                sx={{ marginTop: 4 }}
+                autoHideDuration={3000}
+                onClose={() =>
+                    setShowSnack((prev) => ({ ...prev, open: false }))
+                }
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Box sx={snackStyle}>
+                    <Typography>{showSnack?.message}</Typography>
+                </Box>
+            </Snackbar>
         </>
     );
 };

@@ -19,6 +19,8 @@ const Auth: React.FC<AuthModalProps> = ({
     mode,
     onClose,
     setLoggedIn,
+    onAuthError,
+    onAuthSuccess,
 }) => {
     const [formData, setFormData] = useState<FormData>({
         email: "",
@@ -32,8 +34,13 @@ const Auth: React.FC<AuthModalProps> = ({
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (formData.email === "fail@example.com") {
+            onAuthError?.();
+            return;
+        }
         localStorage.setItem("cookie", "123123"); //proper cookie check won't be implemented during the MiniProject as suggested, will use UID as "cookies"
         setLoggedIn(true);
+        onAuthSuccess?.();
         onClose();
     };
 
