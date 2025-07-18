@@ -26,22 +26,41 @@ const Auth: React.FC<AuthModalProps> = ({
         email: "",
         password: "",
     });
-
+    const [error, setError] = useState<boolean>(true);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (formData.email === "fail@example.com") {
-            onAuthError?.();
-            return;
+        try {
+            const resp = await fetch("http://localhost:8080/" + mode, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => console.log(data))
+                .catch((error) => {
+                    console.error(error);
+                    setError(true);
+                });
+        } catch (err) {
+            console.log(err);
+            setError(true);
         }
-        localStorage.setItem("cookie", "123123"); //proper cookie check won't be implemented during the MiniProject as suggested, will use UID as "cookies"
-        setLoggedIn(true);
-        onAuthSuccess?.();
-        onClose();
+        error
+            ? onAuthError?.()
+            : () => {
+                  onAuthSuccess?.();
+                  setLoggedIn(true);
+              };
     };
 
     return (
