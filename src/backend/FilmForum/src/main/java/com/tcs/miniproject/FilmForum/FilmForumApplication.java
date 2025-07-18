@@ -10,6 +10,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
 
@@ -20,30 +22,13 @@ public class FilmForumApplication {
 		SpringApplication.run(FilmForumApplication.class, args);
 	}
 
-	@Bean
-	public CorsFilter corsFilter() {
-		final var corsAll = Collections.singletonList(CorsConfiguration.ALL);
-		final var cors = new CorsConfiguration();
-		cors.setAllowedOrigins(corsAll);
-		cors.setAllowedMethods(corsAll);
-		cors.setAllowedHeaders(corsAll);
-
-		final var source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", cors);
-
-
-		return new CorsFilter(source);
-	}
-
-	@Bean
-	public SecurityFilterChain defaultSecurityFilterChain(
-			final HttpSecurity http
-	)throws Exception{
-		return http
-				.csrf(AbstractHttpConfigurer::disable)
-				.cors(cors -> corsFilter())
-				.build();
-
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/film_forum/*").allowedOrigins("*");
+			}
+		};
 	}
 
 }
