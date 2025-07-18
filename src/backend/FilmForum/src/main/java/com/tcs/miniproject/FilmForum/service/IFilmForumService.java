@@ -17,6 +17,7 @@ public interface IFilmForumService {
     public List<CommentItemDTO> listAllCommentsByForumId(int id);
     public List<ForumItemDTO> listAllForumsByFilmId(int id);
     public ForumDetailDTO getForumById(int id);
+    public List<ForumItemDTO> listAllForums();
 
     // posts
     public String createComment(CommentCreateDTO comment);

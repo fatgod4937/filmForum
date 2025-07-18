@@ -96,6 +96,16 @@ public class FilmForumService implements IFilmForumService {
         return DTOConverter.convertToDTO(forumDAO.findById(id));
     }
 
+    @Override
+    public List<ForumItemDTO> listAllForums() {
+        List<Forum> forums = forumDAO.listAll();
+        List<ForumItemDTO> result = new ArrayList<>();
+        for(Forum forum : forums){
+            result.add(DTOConverter.convertToForumItemDTO(forum));
+        }
+        return result;
+    }
+
     @Transactional
     @Override
     public String createComment(CommentCreateDTO comment) {
