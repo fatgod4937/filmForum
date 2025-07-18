@@ -6,80 +6,53 @@ import {
     CardContent,
     CardHeader,
     Button,
-    TextField,
 } from "@mui/material";
 import Comment from "../Comment/Comment";
 import { ForumType } from "@/app/data/Forum";
 import { useAuth } from "@/app/context/AuthContext";
-
-interface CommentData {
-    author: string;
-    message: string;
-    postedAt: number;
-}
+import { handleNavigate, slugify } from "@/app/util/functions";
+import { useRouter } from "next/navigation";
+import CommentSection from "../Comment/CommentSection";
 
 const Forum: React.FC<ForumType> = ({
     title,
     author,
     createdAt,
     description,
-    comments,
     movie,
 }) => {
-    const [newComment, setNewComment] = useState<string>("");
+    const router = useRouter();
 
-    function handleRedirect() {
-        throw new Error("Function not implemented.");
-    }
-    const { isLoggedIn } = useAuth();
     return (
         <Card sx={{ my: 3, borderRadius: 3, backgroundColor: "##F5F5F5" }}>
-            <CardHeader
-                title={title}
-                subheader={`Posted by ${author} on ${new Date(
-                    createdAt
-                ).toLocaleString()}`}
-            />
+            <a
+                onClick={() => {
+                    handleNavigate(router, "forums/" + slugify(title));
+                }}
+            >
+                <CardHeader
+                    title={title}
+                    subheader={`Posted by ${author} on ${new Date(
+                        createdAt
+                    ).toLocaleString()}`}
+                />
+            </a>
             <CardContent>
                 <Typography variant="body1" mb={2}>
                     {description}
                 </Typography>
                 {movie ? (
-                    <Button
-                        onClick={handleRedirect}
-                        variant="outlined"
-                        sx={{
-                            color: "black",
-                            paddingLeft: 0,
-                            marginBottom: 5,
+                    <a
+                        onClick={() => {
+                            handleNavigate(router, "movies/" + slugify(title));
                         }}
                     >
                         Find more {movie.title} ({movie.year} related forums)
-                    </Button>
+                    </a>
                 ) : (
                     ""
                 )}
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                    Comments
-                </Typography>
-
-                {Object.entries(comments).map(([id, comment]) => (
-                    <Comment key={id} {...comment} />
-                ))}
-                {isLoggedIn ? (
-                    <TextField
-                        fullWidth
-                        multiline
-                        variant="outlined"
-                        placeholder="Comment something!"
-                        value={newComment}
-                        onChange={(e) => {
-                            setNewComment(e.target.value);
-                        }}
-                    ></TextField>
-                ) : (
-                    ""
-                )}
+                <CommentSection></CommentSection>
             </CardContent>
         </Card>
     );

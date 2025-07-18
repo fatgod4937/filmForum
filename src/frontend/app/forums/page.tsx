@@ -1,12 +1,21 @@
 "use client";
 
-import { Box, CircularProgress, Container, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Container,
+    Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Forum from "../components/Forum/Forum";
 import { ForumType } from "../data/Forum";
 import mockForums from "../data/forums.json";
+import { handleNavigate, slugify } from "../util/functions";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+    const router = useRouter();
     const [fetchedForums, setFetchedForums] = useState<Map<number, ForumType>>(
         new Map([
             [
@@ -16,28 +25,6 @@ const page = () => {
                     createdAt: Date.now(),
                     author: "szabi",
                     description: "lorem ipsum...",
-                    comments: {
-                        1: {
-                            author: "akos",
-                            message: "hulyeseg",
-                            postedAt: Date.now(),
-                        },
-                        2: {
-                            author: "laci",
-                            message: "hulyeseg",
-                            postedAt: Date.now(),
-                        },
-                        3: {
-                            author: "lajos",
-                            message: "hulyeseg",
-                            postedAt: Date.now(),
-                        },
-                        4: {
-                            author: "tibi",
-                            message: "oszinten nem tom mit irjak meg",
-                            postedAt: Date.now(),
-                        },
-                    },
                     movie: {
                         title: "Superman",
                         year: 2025,
