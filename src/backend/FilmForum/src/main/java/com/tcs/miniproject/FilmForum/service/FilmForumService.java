@@ -96,34 +96,85 @@ public class FilmForumService implements IFilmForumService {
         return DTOConverter.convertToDTO(forumDAO.findById(id));
     }
 
+    @Transactional
     @Override
     public String createComment(CommentCreateDTO comment) {
-        return "";
+        if(comment.commentId() != -1){
+            return "Comment already exists, and cant be created";
+        }
+        Comment result =
+                DTOConverter.convertFromDTO(comment, userDAO.findById(comment.userId()), forumDAO.findById(comment.forumId()));
+        commentDAO.save(result);
+        return "Comment successfully added";
     }
 
+    @Transactional
     @Override
     public String createForum(ForumCreateDTO forum) {
-        return "";
+        if(forum.forumId()!= -1){
+            return "Forum already exists, and cant be created";
+        }
+        Forum result =
+                DTOConverter.convertFromDTO(forum, userDAO.findById(forum.userId()), filmDAO.findById(forum.filmId()));
+        forumDAO.save(result);
+        return "Forum successfully created";
     }
 
+    @Transactional
     @Override
     public String updateComment(CommentCreateDTO comment) {
-        return "";
+        if(comment.commentId() == -1){
+            return "Comment does not exist, hence it can not be updated";
+        }
+        Comment og = commentDAO.findById(comment.commentId());
+        if(og.getUser().getId() != comment.userId()){
+            return "User tried to edit another user's comment, hence the operation was cancelled";
+        }
+        Comment result =
+                DTOConverter.convertFromDTO(comment, og);
+        commentDAO.save(result);
+        return "Comment successfully updated";
     }
 
+    @Transactional
     @Override
     public String updateForum(ForumCreateDTO forum) {
-        return "";
+        if(forum.forumId() == -1){
+            return "Forum does not exist, hence it can not be updated";
+        }
+        Forum og = forumDAO.findById(forum.forumId());
+        if(og.getUser().getId() != forum.userId()){
+            return "User tried to edit another user's forum, hence the operation was cancelled";
+        }
+        Forum result = DTOConverter.convertFromDTO(forum, og);
+        forumDAO.save(result);
+        return "Forum successfully updated";
     }
 
+    @Transactional
     @Override
     public String deleteComment(int commentId, int userId) {
-        return "";
+        Comment tempComment = commentDAO.findById(commentId);
+        if(tempComment.getUser().getId() != userId){
+            return "User tried to delete a comment which was not theirs, hence the operation was cancelled";
+        }
+        commentDAO.deleteById(commentId);
+        return "Comment successfully deleted";
     }
 
+    @Transactional
     @Override
     public String deleteForum(int forumId, int userId) {
-        return "";
+        Forum tempForum = forumDAO.findById(forumId);
+        if(tempForum.getUser().getId() != userId){
+            return "User tried to delete a forum which was not theirs, hence the operation was cancelled";
+        }
+        List<Comment> tempComments = commentDAO.findAllByForumId(forumId);
+        for(Comment comment : tempComments){
+            commentDAO.deleteById(comment.getId());
+        }
+        forumDAO.deleteById(forumId);
+        return "Forum and all its comments were successfully deleted";
     }
 
 
