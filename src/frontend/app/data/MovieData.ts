@@ -1,9 +1,6 @@
-export interface MovieProps {
-    movie: {
-        id: number;
-        label: string;
-        posterLink: string;
-        description: string;
-        genre: string;
-    };
-}
+export type Film = {
+    id: number;
+    title: string;
+    genre: string;
+    releaseDate: string;
+};
