@@ -1,47 +1,40 @@
 "use client";
 
 import { Autocomplete, Box, Button, Container, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import Movie from "../components/Movie/Movie";
-import { handleNavigate } from "../util/functions";
+import { handleNavigate, slugify } from "../util/functions";
 import { useRouter } from "next/navigation";
-
-const fetchedFilms = [
-    {
-        id: 1,
-        label: "The Godfather",
-        posterLink: "imgs/posters/godfather.jpg",
-        description:
-            "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-        genre: "Crime, Drama",
-    },
-    {
-        id: 2,
-        label: "Pulp Fiction",
-        posterLink: "imgs/posters/pulpfiction.jpg",
-        description:
-            "The lives of two mob hitmen, a boxer, and others intertwine in tales of violence and redemption.",
-        genre: "Crime, Drama",
-    },
-    {
-        id: 3,
-        label: "Fight Club",
-        posterLink: "imgs/posters/fightclub.jpg",
-        description:
-            "An insomniac office worker and a soap maker form an underground fight club that evolves into something more.",
-        genre: "Drama",
-    },
-];
+import { Film } from "../data/MovieData";
 
 const Page = () => {
     const [inputValue, setInputValue] = useState("");
     const [debouncedInput] = useDebounce(inputValue, 300);
+    const [fetchedFilms, setFetchedFilms] = useState<Film[]>([]);
 
-    const filteredMovies = fetchedFilms.filter((movie) =>
-        movie.label.toLowerCase().includes(debouncedInput.toLowerCase())
-    );
     const router = useRouter();
+
+    useEffect(() => {
+        async function fetchFilms() {
+            try {
+                const resp = await fetch("http://localhost:8080/getFilms");
+                if (!resp.ok) {
+                    console.error("Failed to fetch films");
+                    return;
+                }
+                const data = await resp.json();
+                setFetchedFilms(data);
+            } catch (error) {
+                console.error("Error fetching films:", error);
+            }
+        }
+        fetchFilms();
+    }, []);
+    const filteredMovies = fetchedFilms.filter((movie) =>
+        movie.title.toLowerCase().includes(debouncedInput.toLowerCase())
+    );
+
     return (
         <Container maxWidth="md" sx={{ py: 4 }}>
             <Box
@@ -53,10 +46,9 @@ const Page = () => {
             >
                 <Autocomplete
                     freeSolo
-                    disablePortal
                     options={fetchedFilms}
                     getOptionLabel={(option) =>
-                        typeof option === "string" ? option : option.label
+                        typeof option === "string" ? option : option.title
                     }
                     sx={{ width: 300 }}
                     inputValue={inputValue}
@@ -69,15 +61,28 @@ const Page = () => {
                 />
             </Box>
 
-            <Box mt={4}>
-                {filteredMovies.map((movie) => (
+            <Box
+                mt={4}
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: 2,
+                    justifyContent: "center",
+                    maxWidth: "100%",
+                }}
+            >
+                {filteredMovies.map((movie, index) => (
                     <Button
+                        key={index}
                         sx={{ color: "black", textDecoration: "none" }}
-                        onClick={() => {
-                            handleNavigate(router, "movies/" + "fing");
-                        }}
+                        onClick={() =>
+                            handleNavigate(
+                                router,
+                                `movies/${slugify(movie.title)}`
+                            )
+                        }
                     >
-                        <Movie key={movie.id} movie={movie} />
+                        <Movie movie={movie} />
                     </Button>
                 ))}
             </Box>

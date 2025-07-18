@@ -1,8 +1,12 @@
-import { MovieProps } from "@/app/data/MovieData";
-import { handleNavigate } from "@/app/util/functions";
-import { Box, Button } from "@mui/material";
-import { useRouter } from "next/navigation";
+"use client";
+
+import { Box } from "@mui/material";
 import React from "react";
+import type { Film } from "@/app/data/MovieData"; // Adjust path as needed
+
+export interface MovieProps {
+    movie: Film;
+}
 
 const Movie: React.FC<MovieProps> = ({ movie }) => {
     return (
@@ -11,15 +15,21 @@ const Movie: React.FC<MovieProps> = ({ movie }) => {
             p={2}
             border="1px solid #ccc"
             borderRadius={2}
-            sx={{ display: "flex", flexDirection: "row" }}
+            sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+            }}
         >
-            <img src={movie.posterLink} alt={movie.label} width={200} />
-            <Box sx={{ marginLeft: 3 }} className="space-y-5">
-                <h2>{movie.label}</h2>
-                <p>
+            <Box className="space-y-1">
+                <h2 style={{ margin: 0 }}>{movie.title}</h2>
+                <p style={{ margin: 0 }}>
                     <strong>Genre:</strong> {movie.genre}
                 </p>
-                <p>{movie.description}</p>
+                <p style={{ margin: 0 }}>
+                    <strong>Release Date:</strong>{" "}
+                    {new Date(movie.releaseDate).toLocaleDateString()}
+                </p>
             </Box>
         </Box>
     );
