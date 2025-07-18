@@ -36,6 +36,10 @@ public class Comment {
         this.updateDate = updateDate;
     }
 
+    public Comment(){
+
+    }
+
     public int getId() {
         return id;
     }

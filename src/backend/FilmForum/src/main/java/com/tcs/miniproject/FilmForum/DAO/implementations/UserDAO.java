@@ -33,8 +33,12 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public User findByName(String name) {
-        return entityManager.createQuery("SELECT u from User u where u.username = :name", User.class)
-                .setParameter("name", name).getSingleResult();
+        List<User> users = entityManager.createQuery("SELECT u from User u where u.username = :name", User.class)
+                .setParameter("name", name).getResultList();
+        if(users.isEmpty()){
+            return null;
+        }
+        return users.getFirst();
     }
 
     @Override

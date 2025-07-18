@@ -35,8 +35,11 @@ public class ForumDAO implements IForumDAO {
 
     @Override
     public Forum findByTitle(String title) {
-        return entityManager.createQuery("SELECT f from Forum f where f.title = :title", Forum.class)
-                .setParameter("title", title).getSingleResult();
+        List<Forum> forums =  entityManager.createQuery("SELECT f from Forum f where f.title = :title", Forum.class)
+                .setParameter("title", title).getResultList();
+        if(forums.isEmpty())
+            return null;
+        return forums.getFirst();
     }
 
     @Override

@@ -34,8 +34,11 @@ public class FilmDAO implements IFilmDAO {
 
     @Override
     public Film findByTitle(String title) {
-        return entityManager.createQuery("SELECT f from Film f where f.title = :title", Film.class)
-                .setParameter("title", title).getSingleResult();
+        List<Film> films =  entityManager.createQuery("SELECT f from Film f where f.title = :title", Film.class)
+                .setParameter("title", title).getResultList();
+        if(films.isEmpty())
+            return null;
+        return films.getFirst();
     }
 
     @Override

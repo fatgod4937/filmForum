@@ -48,6 +48,10 @@ public class Forum {
         this.description = description;
     }
 
+    public Forum(){
+
+    }
+
     public int getId() {
         return id;
     }
