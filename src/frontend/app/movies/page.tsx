@@ -72,9 +72,8 @@ const Page = () => {
                 }}
             >
                 {filteredMovies.map((movie, index) => (
-                    <Button
+                    <a
                         key={index}
-                        sx={{ color: "black", textDecoration: "none" }}
                         onClick={() =>
                             handleNavigate(
                                 router,
@@ -83,7 +82,7 @@ const Page = () => {
                         }
                     >
                         <Movie movie={movie} />
-                    </Button>
+                    </a>
                 ))}
             </Box>
         </Container>
