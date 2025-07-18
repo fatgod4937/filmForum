@@ -30,7 +30,7 @@ public class DTOConverter {
 
     //Film to FilmDTO
     public static FilmDTO convertToDTO(Film film){
-        return new FilmDTO(film.getTitle(), film.getGenre(), film.getReleaseDate());
+        return new FilmDTO(film. getId(), film.getTitle(), film.getGenre(), film.getReleaseDate());
     }
 
     //ForumCreateDTO to Forum
@@ -55,7 +55,7 @@ public class DTOConverter {
 
     //Forum to ForumItemDTO
     public static ForumItemDTO convertToForumItemDTO(Forum forum){
-        return new ForumItemDTO(forum.getTitle(), forum.getUser().getUsername(), forum.getCreateDate());
+        return new ForumItemDTO(forum.getId(), forum.getFilm().getId(), forum.getTitle(), forum.getUser().getUsername(), forum.getCreateDate());
     }
 
 
