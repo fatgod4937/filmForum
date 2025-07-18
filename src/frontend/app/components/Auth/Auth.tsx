@@ -26,7 +26,7 @@ const Auth: React.FC<AuthModalProps> = ({
         email: "",
         password: "",
     });
-    const [error, setError] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -35,32 +35,31 @@ const Auth: React.FC<AuthModalProps> = ({
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const resp = await fetch("http://localhost:8080/" + mode, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                }),
-            })
-                .then((response) => response.json())
-                .then((data) => console.log(data))
-                .catch((error) => {
-                    console.error(error);
-                    setError(true);
-                });
+            const resp = await fetch(
+                "http://localhost:8080/film_forum/" + mode,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: formData.email,
+                        password: formData.password,
+                    }),
+                }
+            );
+
+            const message = await resp.text();
+            console.log("Server response:", message);
+
+            setError(false);
+            onAuthSuccess?.();
+            setLoggedIn(true);
         } catch (err) {
-            console.log(err);
+            console.error("Fetch error:", err);
             setError(true);
+            onAuthError?.();
         }
-        error
-            ? onAuthError?.()
-            : () => {
-                  onAuthSuccess?.();
-                  setLoggedIn(true);
-              };
     };
 
     return (

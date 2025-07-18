@@ -5,43 +5,56 @@ import Comment from "./Comment";
 import { useAuth } from "@/app/context/AuthContext";
 import { CommentProps } from "@/app/data/Comment";
 import SendIcon from "@mui/icons-material/Send";
-const CommentSection = () => {
+
+const CommentSection = ({ id }: { id: string }) => {
     const { isLoggedIn } = useAuth();
     const [newComment, setNewComment] = useState<string>("");
     const [fetchedComments, setFetchedComments] = useState<CommentProps[]>();
-    const comments: CommentProps[] = [
-        {
-            author: "alice",
-            message: "This movie was amazing!",
-            postedAt: new Date("2024-06-10T10:15:30Z"),
-        },
-        {
-            author: "bob",
-            message: "I found it kind of slow in the middle.",
-            postedAt: new Date("2024-06-11T14:22:10Z"),
-        },
-        {
-            author: "carol",
-            message: "Great cinematography but weak plot.",
-            postedAt: new Date("2024-06-12T18:45:00Z"),
-        },
-        {
-            author: "dave",
-            message: "Loved the ending!",
-            postedAt: new Date("2024-06-13T09:05:50Z"),
-        },
-        {
-            author: "eve",
-            message: "Totally overrated.",
-            postedAt: new Date("2024-06-14T20:30:00Z"),
-        },
-    ];
+
+    const fetchComments = async () => {
+        try {
+            const resp = await fetch(
+                `http://localhost:8080/film_forum/forum_comments/${id}` //needsfix
+            );
+            const data = await resp.json();
+            console.log(fetchedComments);
+        } catch (err) {
+            console.error("Error fetching comments:", err);
+        }
+    };
+
     useEffect(() => {
-        setFetchedComments(comments);
-    }, []);
-    function handleSend() {
-        return "";
-    }
+        fetchComments();
+    }, [id]);
+    const handleSend = async () => {
+        if (!newComment.trim()) return;
+
+        try {
+            const resp = await fetch(
+                "http://localhost:8080/film_forum/comments", //needsfix
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        forumId: id,
+                        content: newComment,
+                        author: "Anonymous",
+                    }),
+                }
+            );
+
+            if (!resp.ok) {
+                throw new Error("Failed to post comment");
+            }
+
+            setNewComment("");
+            await fetchComments();
+        } catch (err) {
+            console.error("Error posting comment:", err);
+        }
+    };
 
     return (
         <div className="pt-6">

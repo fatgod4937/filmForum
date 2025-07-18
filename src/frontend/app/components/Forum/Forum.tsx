@@ -7,9 +7,7 @@ import {
     CardHeader,
     Button,
 } from "@mui/material";
-import Comment from "../Comment/Comment";
 import { ForumType } from "@/app/data/Forum";
-import { useAuth } from "@/app/context/AuthContext";
 import { handleNavigate, slugify } from "@/app/util/functions";
 import { useRouter } from "next/navigation";
 import CommentSection from "../Comment/CommentSection";
@@ -19,7 +17,6 @@ const Forum: React.FC<ForumType> = ({
     author,
     createdAt,
     description,
-    movie,
 }) => {
     const router = useRouter();
 
@@ -41,7 +38,7 @@ const Forum: React.FC<ForumType> = ({
                 <Typography variant="body1" mb={2}>
                     {description}
                 </Typography>
-                {movie ? (
+                {/* {movie ? (
                     <a
                         onClick={() => {
                             handleNavigate(router, "movies/" + slugify(title));
@@ -51,8 +48,7 @@ const Forum: React.FC<ForumType> = ({
                     </a>
                 ) : (
                     ""
-                )}
-                <CommentSection></CommentSection>
+                )} */}
             </CardContent>
         </Card>
     );

@@ -24,7 +24,7 @@ import { Snack } from "@/app/data/Snack";
 import { handleNavigate } from "@/app/util/functions";
 import { useAuth } from "../../context/AuthContext";
 
-const navItems = ["Home", "Forums", "Movies"];
+const navItems = ["Home", "Movies"];
 
 const Navbar: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -118,12 +118,6 @@ const Navbar: React.FC = () => {
                             </>
                         ) : (
                             <>
-                                <Button
-                                    color="inherit"
-                                    onClick={() => drawerClick("profile")}
-                                >
-                                    Profile
-                                </Button>
                                 <Button color="inherit" onClick={handleLogout}>
                                     Logout
                                 </Button>

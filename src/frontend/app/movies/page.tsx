@@ -18,7 +18,9 @@ const Page = () => {
     useEffect(() => {
         async function fetchFilms() {
             try {
-                const resp = await fetch("http://localhost:8080/getFilms");
+                const resp = await fetch(
+                    "http://localhost:8080/film_forum/films" //works only thing that works
+                );
                 if (!resp.ok) {
                     console.error("Failed to fetch films");
                     return;
@@ -77,7 +79,7 @@ const Page = () => {
                         onClick={() =>
                             handleNavigate(
                                 router,
-                                `movies/${slugify(movie.title)}`
+                                `movies/${slugify(movie.id.toString())}`
                             )
                         }
                     >

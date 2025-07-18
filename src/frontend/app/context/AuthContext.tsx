@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }, []);
 
     const login = () => {
-        localStorage.setItem("cookie", "123123");
+        localStorage.setItem("cookie", "123123"); //noproperauth
         setIsLoggedIn(true);
     };
 

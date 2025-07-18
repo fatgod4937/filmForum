@@ -2,7 +2,7 @@
 
 import { Box } from "@mui/material";
 import React from "react";
-import type { Film } from "@/app/data/MovieData"; // Adjust path as needed
+import type { Film } from "@/app/data/MovieData";
 
 export interface MovieProps {
     movie: Film;
