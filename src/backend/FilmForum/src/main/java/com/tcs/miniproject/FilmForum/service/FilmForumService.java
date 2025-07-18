@@ -106,6 +106,11 @@ public class FilmForumService implements IFilmForumService {
         return result;
     }
 
+    @Override
+    public FilmDTO getFilmById(int id) {
+        return DTOConverter.convertToDTO(filmDAO.findById(id));
+    }
+
     @Transactional
     @Override
     public String createComment(CommentCreateDTO comment) {
@@ -163,27 +168,27 @@ public class FilmForumService implements IFilmForumService {
 
     @Transactional
     @Override
-    public String deleteComment(int commentId, int userId) {
-        Comment tempComment = commentDAO.findById(commentId);
-        if(tempComment.getUser().getId() != userId){
+    public String deleteComment(DeleteDTO dto) {
+        Comment tempComment = commentDAO.findById(dto.deleteId());
+        if(tempComment.getUser().getId() != dto.userId()){
             return "User tried to delete a comment which was not theirs, hence the operation was cancelled";
         }
-        commentDAO.deleteById(commentId);
+        commentDAO.deleteById(dto.deleteId());
         return "Comment successfully deleted";
     }
 
     @Transactional
     @Override
-    public String deleteForum(int forumId, int userId) {
-        Forum tempForum = forumDAO.findById(forumId);
-        if(tempForum.getUser().getId() != userId){
+    public String deleteForum(DeleteDTO dto) {
+        Forum tempForum = forumDAO.findById(dto.deleteId());
+        if(tempForum.getUser().getId() != dto.userId()){
             return "User tried to delete a forum which was not theirs, hence the operation was cancelled";
         }
-        List<Comment> tempComments = commentDAO.findAllByForumId(forumId);
+        List<Comment> tempComments = commentDAO.findAllByForumId(dto.deleteId());
         for(Comment comment : tempComments){
             commentDAO.deleteById(comment.getId());
         }
-        forumDAO.deleteById(forumId);
+        forumDAO.deleteById(dto.deleteId());
         return "Forum and all its comments were successfully deleted";
     }
 

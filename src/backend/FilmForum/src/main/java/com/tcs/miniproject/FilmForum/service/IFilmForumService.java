@@ -18,6 +18,7 @@ public interface IFilmForumService {
     public List<ForumItemDTO> listAllForumsByFilmId(int id);
     public ForumDetailDTO getForumById(int id);
     public List<ForumItemDTO> listAllForums();
+    public FilmDTO getFilmById(int id);
 
     // posts
     public String createComment(CommentCreateDTO comment);
@@ -26,6 +27,6 @@ public interface IFilmForumService {
     public String updateComment(CommentCreateDTO comment);
     public String updateForum(ForumCreateDTO forum);
 
-    public String deleteComment(int commentId, int userId);
-    public String deleteForum(int forumId, int userId);
+    public String deleteComment(DeleteDTO dto);
+    public String deleteForum(DeleteDTO dto);
 }
