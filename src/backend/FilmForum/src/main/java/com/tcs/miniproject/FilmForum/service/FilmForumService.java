@@ -129,8 +129,10 @@ public class FilmForumService implements IFilmForumService {
         if(forum.forumId()!= -1){
             return "Forum already exists, and cant be created";
         }
+        User user = userDAO.findById(forum.userId());
+        Film film = filmDAO.findById(forum.filmId());
         Forum result =
-                DTOConverter.convertFromDTO(forum, userDAO.findById(forum.userId()), filmDAO.findById(forum.filmId()));
+                DTOConverter.convertFromDTO(forum, user, film);
         forumDAO.save(result);
         return "Forum successfully created";
     }

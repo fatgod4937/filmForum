@@ -3,6 +3,7 @@ package com.tcs.miniproject.FilmForum.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,11 +21,13 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name="user_id")
     private Set<Forum> forums = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    @OneToMany
+    @JoinColumn(name="user_id")
+    private List<Comment> comments;
 
     public User(String username, String password) {
         this.username = username;

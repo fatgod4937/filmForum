@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,8 +25,9 @@ public class Film {
     @Column(name="release_date")
     private Date releaseDate;
 
-    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-    private Set<Forum> forums = new HashSet<>();
+    @OneToMany
+    @JoinColumn(name="film_id")
+    private List<Forum> forums;
 
     public Film(String title, String genre, Date releaseDate) {
         this.title = title;
@@ -69,11 +71,11 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
-    public Set<Forum> getForums() {
+    public List<Forum> getForums() {
         return forums;
     }
 
-    public void setForums(Set<Forum> forums) {
+    public void setForums(List<Forum> forums) {
         this.forums = forums;
     }
 

@@ -4,13 +4,10 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name="films")
+@Table(name="forums")
 public class Forum {
 
     @Id
@@ -38,8 +35,9 @@ public class Forum {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(mappedBy = "forum")
-    private Set<Comment> comments = new HashSet<>();
+    @OneToMany
+    @JoinColumn(name="forum_id")
+    private List<Comment> comments;
 
     public Forum(String title, Instant createDate, Instant updateDate, String description) {
         this.title = title;
